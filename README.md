@@ -10,6 +10,7 @@ A tiny, offline-first Android virtual pet built for the **Motorola Razr Ultra (2
 - Gentle offline progress, energy recovery when sleeping, **no death or penalty**
 - Earn stars and seven small collectible achievement badges
 - Garden and cozy-room scenes, automatically using night colors after dark
+- Four dress-up options: none, bow, flower and star, saved locally
 - Sound and haptic feedback (both optional and saved)
 - Local DataStore persistence for settings and all progress; v0.1 tap count preserved
 - Small-screen adaptive layout with safe insets, no ads, trackers, accounts, network permissions, alarms or background service

@@ -149,12 +149,19 @@ fun PetScreen() {
                     PetArt(
                         modifier=Modifier.size(petSize),mood=pet.mood,
                         reaction=reaction,reactionId=reactionId,
+                        accessory=pet.accessory,
                         onPet={ respond(PetAction.PET) }
                     )
                 }
 
                 Text(
-                    text=if (reaction == null && pet.sleeping) "Shhh... having sweet dreams." else message,
+                    text=if (reaction != null) message else when (pet.mood) {
+                        PetMood.ASLEEP -> "Shhh... having sweet dreams."
+                        PetMood.SLEEPY -> "A cozy nap sounds nice."
+                        PetMood.HUNGRY -> "A tiny snack would be lovely!"
+                        PetMood.HAPPY -> "Hi! Tap me for a hug ♡"
+                        PetMood.CONTENT -> "What should we do today?"
+                    },
                     color=label,fontWeight=FontWeight.SemiBold,textAlign=TextAlign.Center,
                     maxLines=1,fontSize=if (compact) 13.sp else 18.sp
                 )
@@ -199,6 +206,14 @@ fun PetScreen() {
                         }
                         TextButton(onClick={ scope.launch { store.changeScene() } }) {
                             Text("Scene: ${if (pet.scene == PetScene.GARDEN) "Garden 🌷" else "Cozy room 🛏"}")
+                        }
+                        TextButton(onClick={ scope.launch { store.cycleAccessory() } }) {
+                            Text("Accessory: " + when (pet.accessory) {
+                                PetAccessory.NONE -> "None"
+                                PetAccessory.BOW -> "Bow 🎀"
+                                PetAccessory.FLOWER -> "Flower 🌸"
+                                PetAccessory.STAR -> "Star ⭐"
+                            })
                         }
                     }
                 },

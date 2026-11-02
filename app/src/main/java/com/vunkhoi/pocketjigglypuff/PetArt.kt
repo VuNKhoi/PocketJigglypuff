@@ -45,6 +45,7 @@ fun PetArt(
     mood: PetMood,
     reaction: PetAction?,
     reactionId: Int,
+    accessory: PetAccessory,
     onPet: () -> Unit
 ) {
     val sleeping = mood == PetMood.ASLEEP && reaction != PetAction.WAKE
@@ -152,6 +153,15 @@ fun PetArt(
             } else {
                 drawLine(outline,Offset(x-4f*u,y+12f*u),Offset(x+4f*u,y+12f*u),2f*u)
             }
+        }
+        val decoration = when (accessory) {
+            PetAccessory.NONE -> ""
+            PetAccessory.BOW -> "🎀"
+            PetAccessory.FLOWER -> "🌸"
+            PetAccessory.STAR -> "⭐"
+        }
+        if (decoration.isNotBlank()) {
+            Text(decoration,modifier=Modifier.align(Alignment.TopCenter),fontSize=26.sp)
         }
         val particle = when (reaction) {
             PetAction.PET, PetAction.WAKE -> "💗"

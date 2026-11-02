@@ -25,6 +25,7 @@ private object Keys {
     val energy = intPreferencesKey("energy")
     val sleeping = booleanPreferencesKey("sleeping")
     val scene = stringPreferencesKey("scene")
+    val accessory = stringPreferencesKey("accessory")
     val soundOn = booleanPreferencesKey("sound")
     val hapticsOn = booleanPreferencesKey("haptics")
     val updatedAt = longPreferencesKey("updated_at")
@@ -42,6 +43,8 @@ private fun Preferences.toPetState(): PetState = PetState(
     energy = (this[Keys.energy] ?: 85).coerceIn(0, 100),
     sleeping = this[Keys.sleeping] ?: false,
     scene = PetScene.entries.firstOrNull { it.name == this[Keys.scene] } ?: PetScene.GARDEN,
+    accessory = PetAccessory.entries.firstOrNull { it.name == this[Keys.accessory] }
+        ?: PetAccessory.NONE,
     soundOn = this[Keys.soundOn] ?: true,
     hapticsOn = this[Keys.hapticsOn] ?: true,
     updatedAt = this[Keys.updatedAt] ?: 0L
@@ -59,6 +62,7 @@ private fun androidx.datastore.preferences.core.MutablePreferences.write(state: 
     this[Keys.energy] = state.energy
     this[Keys.sleeping] = state.sleeping
     this[Keys.scene] = state.scene.name
+    this[Keys.accessory] = state.accessory.name
     this[Keys.soundOn] = state.soundOn
     this[Keys.hapticsOn] = state.hapticsOn
     this[Keys.updatedAt] = state.updatedAt
@@ -76,6 +80,11 @@ class PetStore(context: Context) {
 
     suspend fun changeScene() = update {
         it.copy(scene = if (it.scene == PetScene.GARDEN) PetScene.BEDROOM else PetScene.GARDEN)
+    }
+
+    suspend fun cycleAccessory() = update {
+        val choices = PetAccessory.entries
+        it.copy(accessory = choices[(it.accessory.ordinal + 1) % choices.size])
     }
 
     suspend fun setSound(enabled: Boolean) = update { it.copy(soundOn = enabled) }

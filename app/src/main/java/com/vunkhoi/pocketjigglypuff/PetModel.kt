@@ -4,6 +4,7 @@ import kotlin.math.max
 
 enum class PetAction { PET, FEED, PLAY, SING, SLEEP, WAKE }
 enum class PetScene { GARDEN, BEDROOM }
+enum class PetAccessory { NONE, BOW, FLOWER, STAR }
 enum class PetMood { ASLEEP, SLEEPY, HUNGRY, HAPPY, CONTENT }
 
 /**
@@ -22,6 +23,7 @@ data class PetState(
     val energy: Int = 85,
     val sleeping: Boolean = false,
     val scene: PetScene = PetScene.GARDEN,
+    val accessory: PetAccessory = PetAccessory.NONE,
     val soundOn: Boolean = true,
     val hapticsOn: Boolean = true,
     val updatedAt: Long = 0L
