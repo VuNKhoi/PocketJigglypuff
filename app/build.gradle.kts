@@ -43,5 +43,5 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.datastore:datastore-preferences:1.1.5")
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
 }
