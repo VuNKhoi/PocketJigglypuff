@@ -29,12 +29,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import kotlinx.coroutines.delay
 import kotlin.random.Random
+import kotlin.math.roundToInt
 
 /**
  * All movement is transient UI animation: it does not consume pet needs,
@@ -117,6 +119,8 @@ fun LivingHabitat(
             .background(Brush.verticalGradient(colors))
     ) {
         Canvas(Modifier.fillMaxSize()) {
+            // A fold/resize transition can temporarily report an empty surface.
+            if (size.width <= 1f || size.height <= 1f) return@Canvas
             if (scene == PetScene.BEDROOM) drawCozyRoom(nighttime)
             else drawGardenClearing(nighttime)
         }
@@ -126,20 +130,27 @@ fun LivingHabitat(
         val petSize = minOf(maxWidth * 0.73f, maxHeight * 0.61f)
         val maxTravel = (maxWidth - petSize).coerceAtLeast(0.dp) * 0.43f
 
-        PetArt(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .offset(
-                    x = maxTravel * wandering.value,
-                    y = -maxHeight * 0.09f
-                )
-                .size(petSize),
-            mood = mood,
-            reaction = reaction,
-            reactionId = reactionId,
-            accessory = accessory,
-            onPet = onPet
-        )
+        // The lambda offset is calculated in layout, not composition. Reading
+        // Animatable in composition at 60-120 Hz needlessly rebuilt the stage.
+        // Also dispose infinite idle animations when the activity stops.
+        if (visible && petSize > 1.dp) {
+            PetArt(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .offset {
+                        IntOffset(
+                            x = (maxTravel.toPx() * wandering.value).roundToInt(),
+                            y = (-maxHeight * 0.09f).roundToPx()
+                        )
+                    }
+                    .size(petSize),
+                mood = mood,
+                reaction = reaction,
+                reactionId = reactionId,
+                accessory = accessory,
+                onPet = onPet
+            )
+        }
 
         if (!sleeping && reaction == null && idleEmote.isNotBlank()) {
             Text(

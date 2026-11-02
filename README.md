@@ -2,6 +2,10 @@
 
 A tiny, offline-first Android virtual pet built for the **Motorola Razr Ultra (2025)** and **Samsung Galaxy Z Flip6** outer displays. One Kotlin/Jetpack Compose app, entirely on-device.
 
+## v0.4.2-diagnostic — Razr shutdown investigation
+
+See [Razr compatibility review](docs/RAZR_2025_COMPATIBILITY_REVIEW.md) for independent reports, component-by-component code audit, safety restrictions, and non-reproduction diagnostic guidance.
+
 ## v0.4.1-safe — Razr shutdown diagnostic build
 
 **Important:** A Razr Ultra user reports that the device appears to shut down when launching PocketJigglypuff. This is not a confirmed software root cause. Do not repeatedly reopen the triggering version to investigate.
