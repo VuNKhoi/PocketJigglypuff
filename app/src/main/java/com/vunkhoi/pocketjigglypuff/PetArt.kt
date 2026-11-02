@@ -166,7 +166,7 @@ fun PetArt(
         val particle = when (reaction) {
             PetAction.PET, PetAction.WAKE -> "💗"
             PetAction.FEED -> "🍓"
-            PetAction.PLAY -> "✨"
+            PetAction.PLAY -> "🎾"
             PetAction.SING -> "♫"
             PetAction.SLEEP -> "💤"
             null -> if (sleeping) "ᶻ ᶻ ᶻ" else ""

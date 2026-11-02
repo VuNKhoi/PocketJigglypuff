@@ -4,6 +4,8 @@ import android.view.HapticFeedbackConstants
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -196,7 +198,7 @@ fun PetScreen() {
                 onDismissRequest={ showSettings = false },
                 title={ Text("Little comforts") },
                 text={
-                    Column {
+                    Column(modifier=Modifier.verticalScroll(rememberScrollState())) {
                         Text("No alarms, no chores, just a happy pocket friend.")
                         TextButton(onClick={ scope.launch { store.setSound(!pet.soundOn) } }) {
                             Text("Sound: ${if (pet.soundOn) "On 🔊" else "Off 🔇"}")
@@ -225,7 +227,7 @@ fun PetScreen() {
                 onDismissRequest={ showCollection = false },
                 title={ Text("Our little memories ✨") },
                 text={
-                    Column(verticalArrangement=Arrangement.spacedBy(7.dp)) {
+                    Column(modifier=Modifier.verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(7.dp)) {
                         Text("✦ ${pet.stars} stars earned")
                         Text("♡ ${pet.pets} pets  •  🍓 ${pet.feeds} snacks")
                         Text("🎾 ${pet.plays} games  •  ♫ ${pet.songs} songs")
