@@ -25,7 +25,8 @@ PocketJigglypuff launched successfully on a Samsung Galaxy S24. Repeated launch 
 | Wander Animatable / Modifier.offset | Prior animated Dp offset read in composition and could trigger avoidable per-frame recomposition | Changed to deferred layout-phase lambda offset |
 | Foldable display resize | Transient zero-size drawing surface should not be assumed usable | Added Canvas and PetArt size guards |
 | Continuous animations while backgrounded | Wander loop already cancels on lifecycle STOP; PetArt's infinite transitions could remain composed | PetArt now disposed while lifecycle is not STARTED |
-| Preferences DataStore 1.1.7 | Local persistence, no long-running service; unlikely to shut down device | No change |
+| Preferences DataStore 1.1.7 | Local persistence, no long-running service; unlikely to shut down device | Use lifecycle-aware state collection while visible |
+| Compose Flow collection | Previous UI collected DataStore state even while stopped | Switched to collectAsStateWithLifecycle per Android guidance |
 | ToneGenerator | Only invoked after explicit actions, not at startup | Not likely relevant to immediate-launch symptom |
 | AppWidgetProvider / Samsung cover widget metadata | Android host/RemoteViews integration, independent of main activity | Needs device validation; not identified as cause |
 | AndroidManifest | No internet, hardware-control or reboot permission | No such action exists in app |
