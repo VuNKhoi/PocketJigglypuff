@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="@drawable/widget_background">
+
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:gravity="center" android:text="PocketJigglypuff"
+        android:textSize="19sp" android:textStyle="bold" android:textColor="#63445F"/>
+
+    <TextView android:id="@+id/widget_face"
+        android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:gravity="center"
+        android:text="◕ ᴗ ◕" android:textSize="48sp" android:textColor="#B75D8A"/>
+
+    <TextView android:id="@+id/widget_mood"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:gravity="center" android:text="Hello, pocket friend!"
+        android:textSize="15sp" android:textColor="#63445F"/>
+
+    <TextView android:id="@+id/widget_stats"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="7dp" android:gravity="center"
+        android:text="♡ 75 • 🍓 75 • ⚡ 85" android:textSize="12sp"
+        android:textColor="#986C89"/>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center" android:layout_marginTop="13dp">
+
+        <TextView android:id="@+id/widget_pet_button"
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="48dp"
+            android:gravity="center" android:layout_marginEnd="5dp"
+            android:background="@drawable/widget_button" android:text="♡ Pet"
+            android:textStyle="bold" android:textSize="16sp" android:textColor="#63445F"/>
+
+        <TextView android:id="@+id/widget_open_button"
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="48dp"
+            android:gravity="center" android:layout_marginStart="5dp"
+            android:background="@drawable/widget_button" android:text="Open ↗"
+            android:textStyle="bold" android:textSize="16sp" android:textColor="#63445F"/>
+    </LinearLayout>
+</LinearLayout>
