@@ -12,8 +12,8 @@ android {
         applicationId = "com.vunkhoi.pocketjigglypuff"
         minSdk = 29
         targetSdk = 35
-        versionCode = 4
-        versionName = "0.3.1"
+        versionCode = 5
+        versionName = "0.4.0"
     }
 
     buildTypes {
@@ -44,4 +44,5 @@ dependencies {
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.datastore:datastore-preferences:1.1.7")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.0")
 }

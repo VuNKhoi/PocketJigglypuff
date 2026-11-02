@@ -110,16 +110,11 @@ fun PetScreen() {
                 )
                 .padding(WindowInsets.safeDrawing.asPaddingValues())
         ) {
-            SceneDecor(pet.scene,nighttime)
             // A square cover display and a tall inner display need different spacing.
             // In particular, never assume that four fixed-width buttons fit.
             val narrow = maxWidth < 330.dp
             val compact = maxHeight < 530.dp || maxWidth < 380.dp
             val shortDisplay = maxHeight < 330.dp
-            val petSize = minOf(
-                maxWidth * (if (compact) 0.70f else 0.73f),
-                maxHeight * (if (shortDisplay) 0.29f else if (compact) 0.42f else 0.49f)
-            )
             val label = if (nighttime) Color.White else purple
             val subtle = if (nighttime) Color(0xFFE8DDF2) else plum
 
@@ -164,12 +159,16 @@ fun PetScreen() {
                 }
 
                 Box(
-                    modifier=Modifier.fillMaxWidth().weight(1f),
-                    contentAlignment=Alignment.Center
+                    modifier=Modifier.fillMaxWidth().weight(1f)
+                        .padding(vertical=if (shortDisplay) 2.dp else 6.dp)
                 ) {
-                    PetArt(
-                        modifier=Modifier.size(petSize),mood=pet.mood,
-                        reaction=reaction,reactionId=reactionId,
+                    LivingHabitat(
+                        scene=pet.scene,
+                        nighttime=nighttime,
+                        sleeping=pet.sleeping,
+                        mood=pet.mood,
+                        reaction=reaction,
+                        reactionId=reactionId,
                         accessory=pet.accessory,
                         onPet={ respond(PetAction.PET) }
                     )
@@ -303,23 +302,3 @@ private fun ActionTile(
     }
 }
 
-@Composable
-private fun SceneDecor(scene:PetScene,nighttime:Boolean) {
-    Canvas(Modifier.fillMaxSize()) {
-        val w=size.width
-        val h=size.height
-        if (nighttime) {
-            repeat(18) { i ->
-                val x=(i*71%97)/100f*w
-                val y=(i*37%63)/100f*h
-                drawCircle(Color(0x99FFFFFF),if (i%3==0) 2.1f else 1f,Offset(x,y))
-            }
-            drawCircle(Color(0x66FFF1BB),w*0.10f,Offset(w*0.85f,h*0.18f))
-        } else if (scene==PetScene.GARDEN) {
-            drawCircle(Color(0x88FFFFFF),w*0.13f,Offset(w*0.18f,h*0.22f))
-            drawCircle(Color(0x66FFFFFF),w*0.11f,Offset(w*0.78f,h*0.16f))
-        } else {
-            drawCircle(Color(0x55FFF3B4),w*0.16f,Offset(w*0.80f,h*0.21f))
-        }
-    }
-}

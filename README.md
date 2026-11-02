@@ -2,14 +2,16 @@
 
 A tiny, offline-first Android virtual pet built for the **Motorola Razr Ultra (2025)** and **Samsung Galaxy Z Flip6** outer displays. One Kotlin/Jetpack Compose app, entirely on-device.
 
-## v0.3.1 interactive pet
+## v0.4 living habitats
 
 - Original vector-drawn pink placeholder pet: gentle idle bob, blink, tilt, bounce, sleeping face and little reaction effects
 - Pet by tapping; feed berries; play with a ball; sing; sleep and wake
 - Happiness, fullness and energy needs with simple mood states
 - Gentle offline progress, energy recovery when sleeping, **no death or penalty**
 - Earn stars and seven small collectible achievement badges
-- Garden and cozy-room scenes, automatically using night colors after dark
+- **Living habitats:** illustrated cozy room (window, cushion, house plant and wall art) and garden clearing (hills, tree, flowers and mushroom)
+- **Autonomous behavior:** pet wanders around its habitat, pauses, displays occasional little thoughts, and moves toward a nap spot when asleep. The idle coroutine runs only while the activity is visible; no background wandering service
+- Day/night versions of both scenes
 - Four dress-up options: none, bow, flower and star, saved locally
 - Sound and haptic feedback (both optional and saved)
 - Local DataStore persistence for settings and all progress; v0.1 tap count preserved
@@ -43,11 +45,15 @@ For source builds: open repo in Android Studio with JDK 17 and Android SDK 35. C
 - [ ] Close and reopen app; check stats, counters, mood and preferences persist
 - [ ] Open and close the foldable while running; look for crashes and clipped UI
 - [ ] Switch garden/bedroom, sound/haptics, and open badges
+- [ ] Leave app open 20-30 seconds: pet should wander, pause and occasionally display a small emote
+- [ ] Put pet to sleep: it should wander toward the room cushion and stop moving
+- [ ] Check pet never leaves the visible stage on narrow cover displays
+- [ ] Reopen after inactivity: idle behavior resumes without battery-draining background animation
 - [ ] Confirm that sound/vibration and screen sleep behave normally
 
 ## Roadmap
 
-After real phone feedback, fix layout and launch problems. Later: additional original animated character poses, snack options, short minigames, custom decorations, and separate feasibility work on native cover-screen widgets.
+After real phone feedback, fix layout, movement and launch problems. Later: path-aware prop interaction, additional original animated character poses, snack options, short minigames, custom decorations, and separate feasibility work on native cover-screen widgets.
 
 ## Rights
 
