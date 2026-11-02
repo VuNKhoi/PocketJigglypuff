@@ -32,7 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -64,7 +64,7 @@ fun PetScreen() {
     val context = LocalContext.current.applicationContext
     val view = LocalView.current
     val store = remember(context) { PetStore(context) }
-    val pet by store.state.collectAsState(initial = PetState())
+    val pet by store.state.collectAsStateWithLifecycle(initialValue = PetState())
     val scope = rememberCoroutineScope()
     var reaction by remember { mutableStateOf<PetAction?>(null) }
     var reactionId by remember { mutableIntStateOf(0) }
