@@ -2,7 +2,15 @@
 
 A tiny, offline-first Android virtual pet built for the **Motorola Razr Ultra (2025)** and **Samsung Galaxy Z Flip6** outer displays. One Kotlin/Jetpack Compose app, entirely on-device.
 
-## v0.4 living habitats
+## v0.4.1-safe — Razr shutdown diagnostic build
+
+**Important:** A Razr Ultra user reports that the device appears to shut down when launching PocketJigglypuff. This is not a confirmed software root cause. Do not repeatedly reopen the triggering version to investigate.
+
+This build starts with **static, lightweight safe graphics**. It removes legacy immersive system-UI flags that forced fullscreen and navigation hiding. The animated environment has been retained but moved behind an explicitly labeled experimental option under Settings. **Do not enable it on the Razr until the nature of the shutdown is determined.** The toggle is not persisted across process starts; startup always returns to safe graphics.
+
+If the device truly powers off/reboots, collect the available Android/Motorola system logs without reproducing the event, check system updates, and consider Motorola support if the issue persists. A passing GitHub build cannot confirm device safety.
+
+### v0.4 living habitats
 
 - Original vector-drawn pink placeholder pet: gentle idle bob, blink, tilt, bounce, sleeping face and little reaction effects
 - Pet by tapping; feed berries; play with a ball; sing; sleep and wake

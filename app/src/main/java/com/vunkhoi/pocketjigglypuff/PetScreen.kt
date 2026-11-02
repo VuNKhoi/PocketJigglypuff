@@ -38,6 +38,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -71,6 +72,8 @@ fun PetScreen() {
     var message by remember { mutableStateOf("Tap your little friend!") }
     var showSettings by remember { mutableStateOf(false) }
     var showCollection by remember { mutableStateOf(false) }
+    // Safe by default: never persist opt-in graphics after a reported Razr shutdown.
+    var animatedHabitat by rememberSaveable { mutableStateOf(false) }
 
     fun respond(action: PetAction) {
         val choice = if (pet.sleeping && action != PetAction.WAKE) PetAction.WAKE else action
@@ -162,16 +165,46 @@ fun PetScreen() {
                     modifier=Modifier.fillMaxWidth().weight(1f)
                         .padding(vertical=if (shortDisplay) 2.dp else 6.dp)
                 ) {
-                    LivingHabitat(
-                        scene=pet.scene,
-                        nighttime=nighttime,
-                        sleeping=pet.sleeping,
-                        mood=pet.mood,
-                        reaction=reaction,
-                        reactionId=reactionId,
-                        accessory=pet.accessory,
-                        onPet={ respond(PetAction.PET) }
-                    )
+                    if (animatedHabitat) {
+                        LivingHabitat(
+                            scene=pet.scene,
+                            nighttime=nighttime,
+                            sleeping=pet.sleeping,
+                            mood=pet.mood,
+                            reaction=reaction,
+                            reactionId=reactionId,
+                            accessory=pet.accessory,
+                            onPet={ respond(PetAction.PET) }
+                        )
+                    } else {
+                        Box(
+                            modifier=Modifier.fillMaxSize()
+                                .background(
+                                    if (nighttime) Color(0xFF76658A)
+                                    else Color(0xFFFFD9E8),
+                                    RoundedCornerShape(24.dp)
+                                ),
+                            contentAlignment=Alignment.Center
+                        ) {
+                            Column(
+                                horizontalAlignment=Alignment.CenterHorizontally,
+                                verticalArrangement=Arrangement.Center,
+                                modifier=Modifier.clickable { respond(PetAction.PET) }
+                            ) {
+                                Text(
+                                    if (pet.sleeping) "ᶻ ᶻ ᶻ" else "♡",
+                                    fontSize=22.sp,color=Color(0xFF90587B)
+                                )
+                                Text("◕ ᴗ ◕",fontSize=if (compact) 45.sp else 72.sp,
+                                    color=Color(0xFF985F83))
+                                Text(
+                                    "Safe graphics mode",
+                                    fontSize=11.sp,
+                                    color=if (nighttime) Color.White else purple
+                                )
+                            }
+                        }
+                    }
                 }
 
                 Text(
@@ -239,6 +272,13 @@ fun PetScreen() {
                                 PetAccessory.FLOWER -> "Flower 🌸"
                                 PetAccessory.STAR -> "Star ⭐"
                             })
+                        }
+                        Text(
+                            "Razr diagnostic: animation is OFF on launch. " +
+                                "Do not enable the habitat until the shutdown is understood."
+                        )
+                        TextButton(onClick={ animatedHabitat = !animatedHabitat }) {
+                            Text(if (animatedHabitat) "Use safe graphics" else "Enable animated habitat (experimental)")
                         }
                     }
                 },
