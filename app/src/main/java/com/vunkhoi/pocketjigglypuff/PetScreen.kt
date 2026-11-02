@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -46,6 +48,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
@@ -108,17 +111,24 @@ fun PetScreen() {
                 .padding(WindowInsets.safeDrawing.asPaddingValues())
         ) {
             SceneDecor(pet.scene,nighttime)
-            val compact = maxHeight < 510.dp
+            // A square cover display and a tall inner display need different spacing.
+            // In particular, never assume that four fixed-width buttons fit.
+            val narrow = maxWidth < 330.dp
+            val compact = maxHeight < 530.dp || maxWidth < 380.dp
+            val shortDisplay = maxHeight < 330.dp
             val petSize = minOf(
-                maxWidth * (if (compact) 0.65f else 0.73f),
-                maxHeight * (if (compact) 0.44f else 0.49f)
+                maxWidth * (if (compact) 0.70f else 0.73f),
+                maxHeight * (if (shortDisplay) 0.29f else if (compact) 0.42f else 0.49f)
             )
             val label = if (nighttime) Color.White else purple
             val subtle = if (nighttime) Color(0xFFE8DDF2) else plum
 
             Column(
-                modifier = Modifier.fillMaxSize()
-                    .padding(horizontal=if (compact) 13.dp else 20.dp,vertical=8.dp),
+                modifier = Modifier.fillMaxHeight()
+                    .widthIn(max=480.dp)
+                    .fillMaxWidth()
+                    .align(Alignment.Center)
+                    .padding(horizontal=if (compact) 10.dp else 20.dp,vertical=if (shortDisplay) 4.dp else 8.dp),
                 horizontalAlignment=Alignment.CenterHorizontally,
                 verticalArrangement=Arrangement.SpaceBetween
             ) {
@@ -127,18 +137,27 @@ fun PetScreen() {
                     verticalAlignment=Alignment.CenterVertically,
                     horizontalArrangement=Arrangement.SpaceBetween
                 ) {
-                    Column {
-                        Text("PocketJigglypuff",fontWeight=FontWeight.Bold,color=label,
-                            fontSize=if (compact) 18.sp else 24.sp)
+                    Column(modifier=Modifier.weight(1f)) {
+                        Text(if (narrow) "Pocket Puff" else "PocketJigglypuff",
+                            fontWeight=FontWeight.Bold,color=label,
+                            maxLines=1,overflow=TextOverflow.Ellipsis,
+                            fontSize=if (narrow) 16.sp else if (compact) 18.sp else 24.sp)
                         Text("✦ ${pet.stars} stars  •  ${pet.interactions} moments",
                             modifier=Modifier.clickable { showCollection = true },
-                            color=subtle,fontSize=if (compact) 11.sp else 13.sp)
+                            maxLines=1,overflow=TextOverflow.Ellipsis,
+                            color=subtle,fontSize=if (compact) 10.sp else 13.sp)
                     }
                     Row(verticalAlignment=Alignment.CenterVertically) {
-                        IconButton(onClick={ scope.launch { store.changeScene() } }) {
+                        IconButton(
+                            modifier=Modifier.size(if (compact) 40.dp else 48.dp),
+                            onClick={ scope.launch { store.changeScene() } }
+                        ) {
                             Text(if (pet.scene == PetScene.GARDEN) "🌷" else "🛏",fontSize=21.sp)
                         }
-                        IconButton(onClick={ showSettings = true }) {
+                        IconButton(
+                            modifier=Modifier.size(if (compact) 40.dp else 48.dp),
+                            onClick={ showSettings = true }
+                        ) {
                             Text("⚙",color=label,fontSize=25.sp)
                         }
                     }
@@ -165,29 +184,34 @@ fun PetScreen() {
                         PetMood.CONTENT -> "What should we do today?"
                     },
                     color=label,fontWeight=FontWeight.SemiBold,textAlign=TextAlign.Center,
-                    maxLines=1,fontSize=if (compact) 13.sp else 18.sp
+                    maxLines=1,overflow=TextOverflow.Ellipsis,
+                    fontSize=if (compact) 12.sp else 18.sp
                 )
 
                 Row(
                     modifier=Modifier.fillMaxWidth().padding(vertical=if (compact) 5.dp else 14.dp),
                     horizontalArrangement=Arrangement.SpaceEvenly
                 ) {
-                    NeedMeter("♡",pet.happiness,Color(0xFFEA759F),subtle,compact)
-                    NeedMeter("🍓",pet.fullness,Color(0xFFEBA05E),subtle,compact)
-                    NeedMeter("⚡",pet.energy,Color(0xFF70B2B0),subtle,compact)
+                    NeedMeter("♡",pet.happiness,Color(0xFFEA759F),subtle,compact,Modifier.weight(1f))
+                    NeedMeter("🍓",pet.fullness,Color(0xFFEBA05E),subtle,compact,Modifier.weight(1f))
+                    NeedMeter("⚡",pet.energy,Color(0xFF70B2B0),subtle,compact,Modifier.weight(1f))
                 }
                 Row(
                     modifier=Modifier.fillMaxWidth(),
                     horizontalArrangement=Arrangement.SpaceEvenly,
                     verticalAlignment=Alignment.CenterVertically
                 ) {
-                    ActionTile("🍓","Feed",compact,nighttime,pet.sleeping) { respond(PetAction.FEED) }
-                    ActionTile("🎾","Play",compact,nighttime,pet.sleeping) { respond(PetAction.PLAY) }
-                    ActionTile("♫","Sing",compact,nighttime,pet.sleeping) { respond(PetAction.SING) }
+                    ActionTile("🍓","Feed",compact,nighttime,pet.sleeping,
+                        Modifier.weight(1f).padding(horizontal=2.dp)) { respond(PetAction.FEED) }
+                    ActionTile("🎾","Play",compact,nighttime,pet.sleeping,
+                        Modifier.weight(1f).padding(horizontal=2.dp)) { respond(PetAction.PLAY) }
+                    ActionTile("♫","Sing",compact,nighttime,pet.sleeping,
+                        Modifier.weight(1f).padding(horizontal=2.dp)) { respond(PetAction.SING) }
                     ActionTile(
                         if (pet.sleeping) "☀" else "💤",
                         if (pet.sleeping) "Wake" else "Sleep",
-                        compact,nighttime,false
+                        compact,nighttime,false,
+                        Modifier.weight(1f).padding(horizontal=2.dp)
                     ) { respond(if (pet.sleeping) PetAction.WAKE else PetAction.SLEEP) }
                 }
             }
@@ -245,12 +269,14 @@ fun PetScreen() {
 }
 
 @Composable
-private fun NeedMeter(icon:String,value:Int,tint:Color,textColor:Color,compact:Boolean) {
-    Column(horizontalAlignment=Alignment.CenterHorizontally) {
+private fun NeedMeter(
+    icon:String,value:Int,tint:Color,textColor:Color,compact:Boolean,modifier:Modifier
+) {
+    Column(modifier=modifier,horizontalAlignment=Alignment.CenterHorizontally) {
         Text("$icon $value",fontSize=if (compact) 11.sp else 13.sp,color=textColor)
         LinearProgressIndicator(
             progress={ value/100f },
-            modifier=Modifier.width(if (compact) 72.dp else 96.dp).height(5.dp),
+            modifier=Modifier.fillMaxWidth(0.82f).height(5.dp),
             color=tint,trackColor=Color(0x44FFFFFF)
         )
     }
@@ -258,13 +284,11 @@ private fun NeedMeter(icon:String,value:Int,tint:Color,textColor:Color,compact:B
 
 @Composable
 private fun ActionTile(
-    icon:String,label:String,compact:Boolean,night:Boolean,disabled:Boolean,onClick:()->Unit
+    icon:String,label:String,compact:Boolean,night:Boolean,disabled:Boolean,
+    modifier:Modifier,onClick:()->Unit
 ) {
     Column(
-        modifier=Modifier.size(
-            width=if (compact) 72.dp else 88.dp,
-            height=if (compact) 56.dp else 72.dp
-        ).background(
+        modifier=modifier.height(if (compact) 54.dp else 72.dp).background(
             if (night) Color(0xFFFBDEEB).copy(alpha=if (disabled) 0.5f else 1f)
             else cream.copy(alpha=if (disabled) 0.55f else 0.92f),
             RoundedCornerShape(if (compact) 14.dp else 20.dp)
@@ -272,9 +296,10 @@ private fun ActionTile(
         horizontalAlignment=Alignment.CenterHorizontally,
         verticalArrangement=Arrangement.Center
     ) {
-        Text(icon,fontSize=if (compact) 22.sp else 27.sp)
-        Text(label,fontSize=if (compact) 11.sp else 13.sp,
-            fontWeight=FontWeight.Bold,color=purple)
+        Text(icon,fontSize=if (compact) 20.sp else 27.sp,
+            maxLines=1)
+        Text(label,fontSize=if (compact) 10.sp else 13.sp,
+            fontWeight=FontWeight.Bold,color=purple,maxLines=1)
     }
 }
 

@@ -2,7 +2,7 @@
 
 A tiny, offline-first Android virtual pet built for the **Motorola Razr Ultra (2025)** and **Samsung Galaxy Z Flip6** outer displays. One Kotlin/Jetpack Compose app, entirely on-device.
 
-## v0.2 interactive pet
+## v0.3.1 interactive pet
 
 - Original vector-drawn pink placeholder pet: gentle idle bob, blink, tilt, bounce, sleeping face and little reaction effects
 - Pet by tapping; feed berries; play with a ball; sing; sleep and wake
@@ -13,7 +13,7 @@ A tiny, offline-first Android virtual pet built for the **Motorola Razr Ultra (2
 - Four dress-up options: none, bow, flower and star, saved locally
 - Sound and haptic feedback (both optional and saved)
 - Local DataStore persistence for settings and all progress; v0.1 tap count preserved
-- Small-screen adaptive layout with safe insets, no ads, trackers, accounts, network permissions, alarms or background service
+- Small-screen adaptive layout with safe insets, flexible-width action buttons and meters, centered inner-screen content; no ads, trackers, accounts, network permissions, alarms or background service
 - Optional static Android home-screen widget with **Pet** and **Open** actions, mood and stats
 - Samsung Flex Window widget registration metadata (experimental, not physically tested)
 
