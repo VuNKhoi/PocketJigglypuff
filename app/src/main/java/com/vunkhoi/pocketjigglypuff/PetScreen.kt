@@ -38,7 +38,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -73,7 +72,7 @@ fun PetScreen() {
     var showSettings by remember { mutableStateOf(false) }
     var showCollection by remember { mutableStateOf(false) }
     // Safe by default: never persist opt-in graphics after a reported Razr shutdown.
-    var animatedHabitat by rememberSaveable { mutableStateOf(false) }
+    var animatedHabitat by remember { mutableStateOf(false) }
 
     fun respond(action: PetAction) {
         val choice = if (pet.sleeping && action != PetAction.WAKE) PetAction.WAKE else action
