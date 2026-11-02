@@ -13,8 +13,10 @@ A tiny, offline-first Android virtual pet built for the **Motorola Razr Ultra (2
 - Sound and haptic feedback (both optional and saved)
 - Local DataStore persistence for settings and all progress; v0.1 tap count preserved
 - Small-screen adaptive layout with safe insets, no ads, trackers, accounts, network permissions, alarms or background service
+- Optional static Android home-screen widget with **Pet** and **Open** actions, mood and stats
+- Samsung Flex Window widget registration metadata (experimental, not physically tested)
 
-**Note:** This is an ordinary Android activity that can launch on an external display, **not** a native Samsung cover widget or always-on companion. Support for cover-screen launching requires checks on each target phone.
+**Note:** The main game is an ordinary Android activity. A separate static Android widget is included, with Samsung Flex Window registration metadata based on Samsung's developer documentation. Whether the Z Flip6 actually lists or hosts it is **unverified**; this is not an always-on animated companion. The game can also be launched through MultiStar.
 
 ## Install
 
@@ -32,6 +34,8 @@ For source builds: open repo in Android Studio with JDK 17 and Android SDK 35. C
 
 - [ ] Install and launch from Razr Ultra outer display
 - [ ] Install and launch from Z Flip6 outer display with MultiStar
+- [ ] Check whether native Pocket pet widget appears in Z Flip6 Settings → Cover screen → Widgets
+- [ ] Add widget on normal home screen, test Pet button, Open button and mood refresh
 - [ ] Inspect cutouts, curved corners, text sizes and four action buttons
 - [ ] Pet, feed, play, sing, sleep and wake
 - [ ] Leave sleeping across several minutes, check restored energy

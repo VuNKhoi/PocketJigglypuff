@@ -87,5 +87,6 @@ class PetStore(context: Context) {
             val next = change(preferences.toPetState().advance(now)).copy(updatedAt = now)
             preferences.write(next)
         }
+        PetWidgetProvider.requestUpdate(app)
     }
 }
